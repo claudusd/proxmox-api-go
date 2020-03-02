@@ -662,6 +662,11 @@ func (c *Client) CreateVMDisk(
 		if diskName, containsData := taskResponse["data"]; !containsData || diskName != fullDiskName {
 			return errors.New(fmt.Sprintf("Cannot create VM disk %s", fullDiskName))
 		}
+
+		_, err = c.WaitForCompletion(taskResponse)
+		if err != nil {
+			return err
+		}
 	} else {
 		return err
 	}
